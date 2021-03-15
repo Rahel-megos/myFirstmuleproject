@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="basics" doc:id="52abf4ee-854e-4578-9b27-d5bb6a80fa35" >
+		<http:listener doc:name="HTTP GET" doc:id="cde473d3-d95a-4580-bb5e-a871cfe05d00" config-ref="HTTP_Listener_config" path="/firstpath/*" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="log START" doc:id="c64de6d6-071d-4bcf-899e-069469c04899" message='#["log START - " ++ flow.name]'/>
+		<set-payload value='#["This is the basic flow"]' doc:name="Set Payload" doc:id="668fbb0c-994d-4e60-807c-e50bf01c197b" />
+	</flow>
+	<flow name="queryParams" doc:id="1b872bbe-f976-4bd1-86d6-85bd2f1fdadf" >
+		<http:listener doc:name="HTTP GET" doc:id="e0776ac0-3e56-45ac-a65f-13f909da67e3" config-ref="HTTP_Listener_config" path="/queryParams" allowedMethods="GET" outputMimeType="application/json"/>
+		<logger level="INFO" doc:name="Log START" doc:id="cd07eec5-3cf2-4997-83ba-47fbf467b054" message='#["Log START -" ++ flow.name]'/>
+		<set-payload value="#[%dw 2.0
+
+output application/json
+---
+
+
+
+attributes.queryParams]" doc:name="Set Payload" doc:id="6e02c1cf-0ecd-4c09-9d64-2eddfd823f3a" mimeType="application/json"/>
+	</flow>
+	<flow name="UriParamflow" doc:id="141dd455-8287-4b25-a74a-78395f9dc766" >
+		<http:listener doc:name="HTTP GET" doc:id="5262c24c-a65e-4073-bd25-e1b2e0de6269" config-ref="HTTP_Listener_config" path="/uriParams/{ID}" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="log START" doc:id="0038fb15-af48-4356-9aeb-2ea77e3494de" message = '#["log START - " ++ flow.name]' />
+		<set-payload doc:name="Set Payload" doc:id="a4bc8ab8-4d5d-4780-b12b-9ad27e834fd3" value="#[attributes.uriParams.ID]"/>
+	</flow>
+</mule>

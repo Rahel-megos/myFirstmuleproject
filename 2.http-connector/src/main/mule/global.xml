@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4b7f1423-0b16-4101-bc55-8169246f8ac9" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="BASICS" doc:id="50fe61d6-a893-486f-8190-28af43730f3a" >
+		<http:listener doc:name="HTTP GET" doc:id="4036a244-26c1-4651-8a4d-d7a086f8d333" config-ref="HTTP_Listener_config" path="/basics/*" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="Log START" doc:id="87d3d27e-6e99-4faf-a0a4-42670789444b" message='#["log START -" ++ flow.name]'/>
+		<set-payload value='#["This is the basic flow"]' doc:name="Set Payload" doc:id="a365eaf3-0e71-4b6d-a3dd-1e6effa6f6a8" />
+	</flow>
+	<flow name="globalFlow" doc:id="7cf4eb15-ba08-430f-b4b9-1a5276aeacdd" >
+		<http:listener doc:name="HTTP GET" doc:id="dbddb398-4806-468c-832a-9bd0886d1f25" config-ref="HTTP_Listener_config" path="/uriParams/{ID}"/>
+		<logger level="INFO" doc:name="log START" doc:id="18870d46-923f-446c-b740-e386db017bff" message='#["Log START -" ++ flow.name]' />
+		<set-payload value='#["This is the queryParameter flow"]' doc:name="Set Payload" doc:id="052d4acb-25c3-4e4a-869c-121a2302d808" />
+	</flow>
+</mule>
